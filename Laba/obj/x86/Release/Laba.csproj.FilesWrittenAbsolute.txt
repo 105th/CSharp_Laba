@@ -1,0 +1,5 @@
+/Users/dima/Projects/Laba/Laba/obj/x86/Release/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/dima/Projects/Laba/Laba/bin/Release/Laba.exe.mdb
+/Users/dima/Projects/Laba/Laba/bin/Release/Laba.exe
+/Users/dima/Projects/Laba/Laba/obj/x86/Release/Laba.exe
+/Users/dima/Projects/Laba/Laba/obj/x86/Release/Laba.exe.mdb
