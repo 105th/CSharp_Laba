@@ -3,62 +3,56 @@ using System.Collections.Generic;
 
 namespace Laba
 {
-    //Одна запись с одним полем типа "строка"
-    public class RecordWithOneStringField
-    {
-        int r_PrimaryKey; //Первичный ключ
-        string r_FirstField; //Строка первого поля
+   //Абстрактный класс одной записи
+   public abstract class Record
+   {
+      protected int r_PrimaryKey; //Первичный ключ
 
-        //Конструктор
-        public RecordWithOneStringField(int tmpPrimaryKey = 0, string dataOfFirstField = null)
-        {
-            r_PrimaryKey = tmpPrimaryKey;
-            r_FirstField = dataOfFirstField;
-        }
+      //Защищенный конструктор
+      protected Record(int tmpPrimaryKey = 0)
+      {
+         r_PrimaryKey = tmpPrimaryKey;
+      }
 
-//        public void SetPK (int primaryKey)
-//        {
-//            r_PrimaryKey = primaryKey;
-//        }
-//
-//        public int GetPK ()
-//        {
-//            return (r_PrimaryKey);
-//        }
-//
-//        public void SetFirstField (string firstField)
-//        {
-//            r_FirstField = firstField;
-//        }
-//
-//        public string GetFirstField ()
-//        {
-//            return(r_FirstField);
-//        }
+      //Виртуальные методы задания и выдачи Первичного Ключа записи
+      public virtual int PK {
+         get 
+         {
+            return(r_PrimaryKey);
+         }
+         set
+         { 
+            r_PrimaryKey = value;
+         }
+      }
 
-        //Методы задания и выдачи поля Первичного Ключа
-        public int PK {
-            get 
-            {
-                return(r_PrimaryKey);
-            }
-            set
-            { 
-                r_PrimaryKey = value;
-            }
-        }
+   }
 
-        //Методы задания и выдачи поля Первичного Ключа
-        public string FirstField {
-            get
-            { 
-                return(r_FirstField);
-            }
-            set
-            {
-                r_FirstField = value; 
-            }
-        }
+   //Класс одной записи с одним полем типа "строка" унаследованным от класса Record
+   public class RecordWithOneStringField : Record
+   {
+      string r_FirstField; //Строка первого поля
+
+      //Конструктор
+      public RecordWithOneStringField(int tmpPrimaryKey = 0, string tmpFirstField = null)
+      {
+         r_PrimaryKey = tmpPrimaryKey;
+         r_FirstField = tmpFirstField;
+      }
+
+      //Методы задания и выдачи первого поля типа "строка"
+      public string FirstField {
+         get
+         { 
+            return(r_FirstField);
+         }
+         set
+         {
+            if (string.IsNullOrWhiteSpace (value))
+               throw new ArgumentNullException ("Поле не может быть пустым!");
+            r_FirstField = value; 
+         }
+      }
 
 
         //Переопределение стандартного метода ToString для текстового представления
@@ -68,6 +62,11 @@ namespace Laba
         }
     }
 
+   //Класс Бизнес Логики 
+   public class DataMapper
+   {
+      Users TableUsers;
+   }
 
     //Таблица Пользователи
 	public class Users
@@ -75,7 +74,7 @@ namespace Laba
         RecordWithOneStringField[] u_Records; //Массив записей с одним полем типа "строка"
         int u_NumberOfRecords; //Количество записей
         int u_NumberOfFields; //Количество полей
-        int u_MaxRecords;
+        int u_MaxRecords; //Общая емкость таблицы
 
 //        //Константный первичный ключ для первой строки таблицы, т.е. для название полей
 //        const int PRIMARYKEYFORNAMEOFFIELDS = 0;
@@ -191,28 +190,7 @@ namespace Laba
     {
         public static void Main (string[] args)
         {
-            Users u1 = new Users(10);
-
-            u1.Add("Dima");
-            u1.Add("Vasya");
-            u1.Add("Anton");
-            u1.Add("Petr");
-
-            Console.WriteLine();
-            u1.Display();
-
-            u1.Remove();
-            u1.Remove(2);
-
-            Console.WriteLine();
-            u1.Display();
-
-            u1.Add("Vasya");
-            u1.Add("Vasya2");
-            u1.Add("Vasya3");
-
-            Console.WriteLine();
-            u1.Display();
+            
         }
     }
 }

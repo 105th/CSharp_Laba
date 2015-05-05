@@ -3,3 +3,8 @@
 /Users/dima/Projects/Laba/Laba/bin/Debug/Laba.exe
 /Users/dima/Projects/Laba/Laba/obj/x86/Debug/Laba.exe
 /Users/dima/Projects/Laba/Laba/obj/x86/Debug/Laba.exe.mdb
+/Users/dima/Projects/Laba/CSharp_Laba/Laba/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/dima/Projects/Laba/CSharp_Laba/Laba/obj/x86/Debug/Laba.exe
+/Users/dima/Projects/Laba/CSharp_Laba/Laba/obj/x86/Debug/Laba.exe.mdb
+/Users/dima/Projects/Laba/CSharp_Laba/Laba/bin/Debug/Laba.exe.mdb
+/Users/dima/Projects/Laba/CSharp_Laba/Laba/bin/Debug/Laba.exe
