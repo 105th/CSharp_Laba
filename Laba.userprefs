@@ -1,6 +1,13 @@
 ﻿<Properties StartupItem="Laba/Laba.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Laba/DataTier.cs">
+    <Files>
+      <File FileName="Laba/FileDB.cs" Line="29" Column="45" />
+      <File FileName="Laba/DataTier.cs" Line="31" Column="27" />
+      <File FileName="Laba/Program.cs" Line="68" Column="39" />
+      <File FileName="Laba/Record.cs" Line="20" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
