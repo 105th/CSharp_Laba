@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Schema;
 
 namespace Laba
 {
@@ -12,29 +9,29 @@ namespace Laba
 	public class DataTier
 	{
 		//Лист записей
-		List<Record> db_Records;
-		//Количество записей в БД
-		int db_Length;
+		List<Record> _tableRecords;
+		//Количество записей в таблице БД
+		int _tableLength;
 		//Свободный ключ
-		int db_FreePK;
+		int _tableFreePK;
 		
 
-		//Конструктор базы данных
+		//Конструктор таблицы базы данных
 		public DataTier()
 		{
-			db_Records = new List<Record>();
-			db_Length = 0;
-			db_FreePK = 0;
+			_tableRecords = new List<Record>();
+			_tableLength = 0;
+			_tableFreePK = 0;
 		}
 
-		//Свойство для хранения размера базы данных
+		//Свойство для хранения размера таблицы базы данных
 		[XmlAttribute("Length")]
 		public int Length {
 			get {
-				return db_Length;
+				return _tableLength;
 			}
 			set {
-				db_Length = value;
+				_tableLength = value;
 			}
 		}
 
@@ -42,7 +39,7 @@ namespace Laba
 		[XmlArray("Records"), XmlArrayItem("Record")]
 		public List<Record> Records {
 			get {
-				return db_Records;
+				return _tableRecords;
 			}
 		}
 
@@ -50,15 +47,15 @@ namespace Laba
 		public bool CheckIndex(int index)
 		{
 			//Проверка индекса на выход за границы
-			if (index > db_Length || index < 0)
+			if (index > _tableLength || index < 0)
 				throw new ArgumentOutOfRangeException("Недопустимое значение индекса");
 
-			//Проверка наличия записей в базе данных
-			if (db_Length < 1)
+			//Проверка наличия записей в таблице базе данных
+			if (_tableLength < 1)
 				throw new ArgumentOutOfRangeException("В базе данных нет записей!");
 
 			//Проверка наличия записи
-			if (db_Records[index] == null)
+			if (_tableRecords[index] == null)
 				throw new ArgumentException("Данной записи не существует!");
 
 			return true;
@@ -67,10 +64,10 @@ namespace Laba
 		//Метод создания записи
 		public void Create(Record record)
 		{
-			record.PK = db_FreePK++;
+			record.PK = _tableFreePK++;
 
-			db_Records.Add(record);
-			db_Length++;
+			_tableRecords.Add(record);
+			_tableLength++;
 		}
 
 		//Метод считывания записи
@@ -78,7 +75,7 @@ namespace Laba
 		{
 			CheckIndex(id); //Проверяем индекс
 
-			return db_Records[id];
+			return _tableRecords[id];
 		}
 
 		//Метод обновления записи
@@ -87,8 +84,8 @@ namespace Laba
 			CheckIndex(id); //Проверяем индекс
 
 			//Обновление записи
-			record.PK = db_Records[id].PK; //Чтобы не обновлять ключ, присваиваем старый
-			db_Records[id] = record;
+			record.PK = _tableRecords[id].PK; //Чтобы не обновлять ключ, присваиваем старый
+			_tableRecords[id] = record;
 		}
 
 		//Метод удаления записи
@@ -97,23 +94,32 @@ namespace Laba
 			CheckIndex(id); //Проверяем индекс
 
 			//Удаление записи
-			db_Records.RemoveAt(id);
-			db_Length--;
+			_tableRecords.RemoveAt(id);
+			_tableLength--;
 		}
 
-		//Свойство для индексирования
+		//Индексатор целого типа
 		public Record this[int index] {
 			get {
 				return Read(index);
 			}
 			set {
 				//Проверка индекса на выход за границы
-				if (index > db_Length)
+				if (index > _tableLength)
 					throw new ArgumentOutOfRangeException("Недопустимое значение индекса");
 
 				Update(index, value);
 			}
 		}
+
+		//TODO Индексатор для строки
+		//      public int this[string day]
+		//      {
+		//         get
+		//         {
+		//            return (GetDay(day));
+		//         }
+		//      }
 
 
 		//Переопределение метода ToString
@@ -121,41 +127,6 @@ namespace Laba
 		{
 			return string.Format("DataMapper: Length = {0}", Length);
 		}
-
-		//		//Сериализация
-		//      public void Serialize(string path = "DataBase.xml", DataTier)
-		//		{
-		//			XmlSerializer serializer = new XmlSerializer(typeof(DataTier));
-		//			using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate)) {
-		////				for (int i = 0; i < db_Length; i++)
-		////					serializer.Serialize(fs, db_Records[i]);
-		//				serializer.Serialize(fs, this);
-		//
-		//			}
-		//		}
-         
-		//TODO Разобраться с приватными записями.
-		//Десериализация
-		//		public void Deserialize(string filename = "DataBase.xml")
-		//		{
-		//			// Create an instance of the XmlSerializer specifying type and namespace.
-		//			XmlSerializer serializer = new XmlSerializer(typeof(RecordWithTwoStringField));
-		//
-		//			// A FileStream is needed to read the XML document.
-		//			FileStream fs = new FileStream(filename, FileMode.Open);
-		//			XmlReader reader = XmlReader.Create(fs);
-		//
-		//			// Declare an object variable of the type to be deserialized.
-		//			RecordWithTwoStringField item;
-		//
-		//			// Use the Deserialize method to restore the object's state.
-		//			while (fs.CanRead) {
-		//				item = (RecordWithTwoStringField)serializer.Deserialize(reader);
-		//				serializer.
-		//				db_Records.Add(item);
-		//			}
-		//			fs.Close();
-		//		}
 	}
 
 }

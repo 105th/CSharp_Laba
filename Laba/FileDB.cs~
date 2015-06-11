@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
-using System.Collections.Generic;
 
 namespace Laba
 {
@@ -10,7 +9,7 @@ namespace Laba
       //Сериализация
       public static void Serialize(string path = "DataBase.xml", DataTier data = null)
       {
-         //Проверяем базу данных на наличие чего-либо
+         //Проверяем таблицу баз данных на наличие чего-либо
          if (data == null)
             throw new ArgumentNullException("База данных пуста!");
 

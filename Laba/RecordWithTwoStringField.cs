@@ -6,15 +6,15 @@ namespace Laba
 	//Класс одной записи с двумя полями типа "строка", унаследованный от класса RecordWithOneStringField
 	public class RecordWithTwoStringField : RecordWithOneStringField
 	{
-		string r_SecondField;
+		string _SecondField;
 		//строка второго поля
 
 		//конструктор
 		public RecordWithTwoStringField(int primaryKey = 0, string firstField = null, string secondField = null)
 		{
-			r_PrimaryKey = primaryKey;
-			r_FirstField = firstField;
-			r_SecondField = secondField;
+			_PrimaryKey = primaryKey;
+			_FirstField = firstField;
+			_SecondField = secondField;
 		}
 
 		//конструктор
@@ -25,20 +25,20 @@ namespace Laba
 		//Методы задания и выдачи второго поля типа "строка"
 		public string SecondField {
 			get { 
-				return(r_SecondField);
+				return(_SecondField);
 			}
 			set {
 				if (string.IsNullOrWhiteSpace(value))
 					throw new ArgumentNullException("Поле не может быть пустым!");
 
-				r_SecondField = value; 
+				_SecondField = value; 
 			}
 		}
 
 		//Переопределение стандартного метода ToString для текстового представления
 		public override string ToString()
 		{
-			return string.Format("PK: {0, 3}, FirstField: {1, -10}, SecondField: {2, -10};", r_PrimaryKey, r_FirstField, r_SecondField);
+			return string.Format("PK: {0, 3}, FirstField: {1, -10}, SecondField: {2, -10};", _PrimaryKey, _FirstField, _SecondField);
 		}
 	}
 }
