@@ -8,12 +8,17 @@ namespace Laba
 	[Serializable]
 	public class DataTier
 	{
+		//Имя для таблицы
+		string _tableName;
 		//Лист записей
 		List<Record> _tableRecords;
 		//Количество записей в таблице БД
 		int _tableLength;
 		//Свободный ключ
 		int _tableFreePK;
+		// Тип записей, хранящихся в таблице
+		string _typeOfRecords;
+
 		
 
 		//Конструктор таблицы базы данных
@@ -22,9 +27,30 @@ namespace Laba
 			_tableRecords = new List<Record>();
 			_tableLength = 0;
 			_tableFreePK = 0;
+			_tableName = "unnamed";
 		}
 
-		//Свойство для хранения размера таблицы базы данных
+		//Конструктор таблицы базы данных с именем
+		public DataTier(string name = "unnamed")
+		{
+			_tableRecords = new List<Record>();
+			_tableLength = 0;
+			_tableFreePK = 0;
+			_tableName = name;
+		}
+
+		//Свойство для хранения имени таблицы базы данных.
+		[XmlAttribute("Name")]
+		public string Name {
+			get {
+				return _tableName;
+			}
+			set {
+				_tableName = value;
+			}
+		}
+
+		//Свойство для хранения размера таблицы базы данных.
 		[XmlAttribute("Length")]
 		public int Length {
 			get {
@@ -32,6 +58,17 @@ namespace Laba
 			}
 			set {
 				_tableLength = value;
+			}
+		}
+
+		// Свойство для статуса изменений в данных
+		[XmlAttribute("TypeOfRecords")]
+		public string TypeOfRecords {
+			get {
+				return _typeOfRecords;
+			}
+			set {
+				_typeOfRecords = value;
 			}
 		}
 
@@ -48,11 +85,13 @@ namespace Laba
 		{
 			//Проверка индекса на выход за границы
 			if (index > _tableLength || index < 0)
-				throw new ArgumentOutOfRangeException("Недопустимое значение индекса");
+				throw new ArgumentOutOfRangeException("Недопустимое значение " +
+				"индекса");
 
 			//Проверка наличия записей в таблице базе данных
 			if (_tableLength < 1)
-				throw new ArgumentOutOfRangeException("В базе данных нет записей!");
+				throw new ArgumentOutOfRangeException("В базе данных нет" +
+				" записей!");
 
 			//Проверка наличия записи
 			if (_tableRecords[index] == null)
@@ -68,6 +107,7 @@ namespace Laba
 
 			_tableRecords.Add(record);
 			_tableLength++;
+			_typeOfRecords = record.GetType().ToString();
 		}
 
 		//Метод считывания записи
@@ -84,7 +124,8 @@ namespace Laba
 			CheckIndex(id); //Проверяем индекс
 
 			//Обновление записи
-			record.PK = _tableRecords[id].PK; //Чтобы не обновлять ключ, присваиваем старый
+			// Чтобы не обновлять ключ, присваиваем старый.
+			record.PK = _tableRecords[id].PK;
 			_tableRecords[id] = record;
 		}
 
@@ -106,7 +147,8 @@ namespace Laba
 			set {
 				//Проверка индекса на выход за границы
 				if (index > _tableLength)
-					throw new ArgumentOutOfRangeException("Недопустимое значение индекса");
+					throw new ArgumentOutOfRangeException("Недопустимое значение" +
+					" индекса");
 
 				Update(index, value);
 			}
@@ -125,7 +167,7 @@ namespace Laba
 		//Переопределение метода ToString
 		public override string ToString()
 		{
-			return string.Format("DataMapper: Length = {0}", Length);
+			return string.Format("DataTier: Length = {0}", Length);
 		}
 	}
 

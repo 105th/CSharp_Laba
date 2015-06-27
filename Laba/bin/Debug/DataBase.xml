@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DataTier xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Length="3">
+<DataTier xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="unnnamed" Length="1">
   <Records>
-    <Record xsi:type="RecordWithTwoStringField">
+    <Record xsi:type="RecordWithOneStringField">
       <PK>0</PK>
-      <FirstField>Dima</FirstField>
-      <SecondField>User</SecondField>
+      <FirstField>Дима</FirstField>
     </Record>
-    <Record xsi:type="RecordWithTwoStringField">
+  </Records>
+</DataTier>ecord xsi:type="RecordWithTwoStringField">
       <PK>2</PK>
       <FirstField>Dima</FirstField>
       <SecondField>Moderator</SecondField>

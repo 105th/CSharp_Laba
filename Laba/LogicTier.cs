@@ -1,19 +1,65 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace Laba
 {
 	public class LogicTier
 	{
-		// Экземляр слоя данных
+		// Экземляр слоя данных.
 		DataTier _table;
-		//Есть ли несохраненные изменения в таблице
+		// Есть ли несохраненные изменения в таблице.
 		bool _tableUnsavedChanges;
 
 		//Конструктор экземляра Юзер логики
-		public LogicTier(DataTier db)
+		public LogicTier()
 		{
-			_table = db;
+			_table = new DataTier();
 			_tableUnsavedChanges = false;
+//			_typeOfRecords = "Laba.Record";
+		}
+
+		//Конструктор экземляра Юзер логики
+		public LogicTier(DataTier dataTable)
+		{
+			_table = dataTable;
+			_tableUnsavedChanges = false;
+//			_typeOfRecords = "Laba.Record";
+		}
+
+		// Свойство для статуса изменений в данных
+		[XmlIgnoreAttribute]
+		public bool Status {
+			get {
+				return _tableUnsavedChanges;
+			}
+		}
+
+		// Свойство для имени таблицы
+		[XmlIgnoreAttribute]
+		public string Name {
+			get {
+				return _table.Name;
+			}
+			set {
+				// Проверяем имя на пустоту.
+				if (string.IsNullOrWhiteSpace(value))
+					throw new ArgumentException("Имя не может быть пустым");
+
+				//Задаем имя таблице
+				_table.Name = value;
+			}
+		}
+
+		public string TypeOfRecords {
+			get {
+				return _table.TypeOfRecords;  
+			}
+		}
+
+		// Метод проверки индекса.
+		public bool CheckIndex(int index)
+		{
+			return _table.CheckIndex(index);
 		}
 
 		//Метод создания записи
@@ -26,7 +72,10 @@ namespace Laba
 		//Метод считывания записи
 		public Record Read(int id)
 		{
-			return _table[id];  
+			if (_table.Length == 0)
+				Console.WriteLine("База данных пуста!");
+
+			return _table[id];
 		}
 
 		//Метод считывания всех записей
@@ -35,7 +84,8 @@ namespace Laba
 			if (_table.Length == 0)
 				Console.WriteLine("База данных пуста!");
 
-			for (int i = 0; i < _table.Length; i++) {
+			for (int i = 0; i < _table.Length; i++)
+			{
 				Console.WriteLine(string.Format("{0}: {1}", i, _table[i]));
 			}
 		}
@@ -59,19 +109,31 @@ namespace Laba
 		{
 			for (int i = _table.Length - 1; i >= 0; i--)
 				Delete(i);
+
+			_tableUnsavedChanges = true;
 		}
    
 		//Сохранение таблицы базы данных на диск
-		public void Save(string path = "DataBase.xml")
+		public void Save(string path = null)
 		{
+			if (string.IsNullOrWhiteSpace(path))
+				path = "DataBase/" + _table.Name + ".xml";
+
 			FileDB.Serialize(path, _table);
 			_tableUnsavedChanges = false;
+
+			Console.WriteLine("Таблица сохранена успешно!");
 		}
    
 		//Загрузка таблицы базы данных с диска
-		public void Load(string path = "DataBase.xml")
+		public void Load(string path = null)
 		{
+			if (string.IsNullOrWhiteSpace(path))
+				path = "DataBase/unnamed.xml";
+
 			_table = FileDB.Deserialize(path);
+
+			Console.WriteLine("Таблица загружена успешно!");
 		}
 
 		// Решение поставленной задачи
