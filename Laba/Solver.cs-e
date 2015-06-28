@@ -1,0 +1,73 @@
+﻿using System;
+
+namespace Laba
+{
+	//19. Класс – уровни доступа.
+	//Даны пользователи, роли и пересечение пользователей и ролей, вывести всех пользователей для указанной роли и наоборот, все роли для указанного пользователя;
+	public abstract class Solver
+	{
+		public void Solve(LogicTier Users, LogicTier Roles, LogicTier UsersRoles)
+		{
+			// Выводм информацию о задаче
+			Console.WriteLine("19. Класс – уровни доступа.\n" +
+			"Даны пользователи, роли и пересечение пользователей и ролей, " +
+			"вывести всех пользователей для указанной роли и наоборот, " +
+			"все роли для указанного пользователя.");
+         
+			Console.WriteLine("Вывести всех пользователей для роли [1] или" +
+			"вывести все роли для пользователя?[2]");
+
+			// Считываем ответ.
+			int answer;
+			int.TryParse(Console.ReadLine(), out answer);
+
+			// Если ввёл не то, повторяем ввод.
+			while (answer != 1 || answer != 2 || answer != -1)
+			{
+				Console.WriteLine("Похоже, вы ввели что-то другое, " +
+				"введите 1, 2 или -1 для выхода:");
+				int.TryParse(Console.ReadLine(), out answer);
+			}
+
+			// Работаем с ответом.
+			switch (answer)
+			{
+			// Выходим из функции.
+				case -1:
+					{
+						Console.WriteLine("Выходим обратно в меню");
+						return;
+					}
+				case 1:
+					{
+						// Выводим таблицу ролей.
+						Console.WriteLine("Таблица ролей:");
+						Roles.ReadAll().ForEach(element => Console.WriteLine(element));
+
+						Console.WriteLine("Введите номер роли (начиная с нуля)," +
+						" для которой вывести всех пользователей");
+
+						// Считываем ответ.
+						int id;
+						int.TryParse(Console.ReadLine(), out id);
+
+						// Если ввёл не то, повторяем ввод.
+						while (!(Roles.CheckIndex(id)))
+						{
+							Console.WriteLine("Похоже, вы ввели что-то другое " +
+							"либо данной записи не существует " +
+							"повторите ввод или введите -1 для выхода:");
+							int.TryParse(Console.ReadLine(), out id);
+						}
+
+//                  UsersRoles.
+
+						break;
+					}
+				default:
+					break;
+			}
+		}
+	}
+}
+

@@ -4,24 +4,33 @@ using System.Xml.Serialization;
 
 namespace Laba
 {
-	//Класс Слоя Данных
+	/// <summary>
+	/// Класс Слоя Данных..
+	/// </summary>
 	[Serializable]
 	public class DataTier
 	{
-		//Имя для таблицы
+		/// <summary>
+		/// Имя для таблицы.
+		/// </summary>
 		string _tableName;
-		//Лист записей
+		/// <summary>
+		/// Лист записей.
+		/// </summary>
 		List<Record> _tableRecords;
-		//Количество записей в таблице БД
+		/// <summary>
+		/// Количество записей в таблице БД.
+		/// </summary>
 		int _tableLength;
-		//Свободный ключ
+		/// <summary>
+		/// Свободный ключ.
+		/// </summary>
 		int _tableFreePK;
-		// Тип записей, хранящихся в таблице
-		string _typeOfRecords;
 
-		
 
-		//Конструктор таблицы базы данных
+		/// <summary>
+		/// Конструктор таблицы базы данных <see cref="Laba.DataTier"/>.
+		/// </summary>
 		public DataTier()
 		{
 			_tableRecords = new List<Record>();
@@ -30,7 +39,10 @@ namespace Laba
 			_tableName = "unnamed";
 		}
 
-		//Конструктор таблицы базы данных с именем
+		/// <summary>
+		/// Конструктор таблицы базы данных с именем <see cref="Laba.DataTier"/>.
+		/// </summary>
+		/// <param name="name">Имя таблицы.</param>
 		public DataTier(string name = "unnamed")
 		{
 			_tableRecords = new List<Record>();
@@ -39,7 +51,35 @@ namespace Laba
 			_tableName = name;
 		}
 
-		//Свойство для хранения имени таблицы базы данных.
+		/// <summary>
+		/// Конструктор таблицы базы данных из списка записей
+		///  <see cref="Laba.DataTier"/>.
+		/// </summary>
+		/// <param name="records">Список записей.</param>
+		public DataTier(List<Record> records, string name = "unnamed")
+		{
+			_tableRecords = records;
+			_tableLength = records.Count;
+			// Здесь требуется найти первый свободный первичный ключ, т.е. (самый 
+			// максимальный + 1).
+			int bestFreePK = 0;
+
+			// Выполняем поиск максимального ключа с помощью лямбда выражения.
+			records.ForEach(rec => {
+				if (rec.PK > bestFreePK)
+					bestFreePK = rec.PK;
+			});
+
+			// Присваиваем результат.
+			_tableFreePK = bestFreePK + 1;
+			_tableName = name;
+		}
+
+		/// <summary>
+		/// Свойство для хранения имени таблицы базы данных.
+		/// </summary>
+		/// 
+		/// <value>Возвращает\задает имя таблицы</value>
 		[XmlAttribute("Name")]
 		public string Name {
 			get {
@@ -50,7 +90,10 @@ namespace Laba
 			}
 		}
 
-		//Свойство для хранения размера таблицы базы данных.
+		/// <summary>
+		/// Свойство для хранения количества записей таблицы базы данных.
+		/// </summary>
+		/// <value>Возвращает\задает количество записей в таблице</value>
 		[XmlAttribute("Length")]
 		public int Length {
 			get {
@@ -61,18 +104,10 @@ namespace Laba
 			}
 		}
 
-		// Свойство для статуса изменений в данных
-		[XmlAttribute("TypeOfRecords")]
-		public string TypeOfRecords {
-			get {
-				return _typeOfRecords;
-			}
-			set {
-				_typeOfRecords = value;
-			}
-		}
-
-		//Свойство для приватного поля записи (для поддержки сериализации)
+		/// <summary>
+		/// Свойство для хранения записей таблицы.
+		/// </summary>
+		/// <value>Список записей в таблице.</value>
 		[XmlArray("Records"), XmlArrayItem("Record")]
 		public List<Record> Records {
 			get {
@@ -80,7 +115,15 @@ namespace Laba
 			}
 		}
 
-		//Проверки индекса
+		/// <summary>
+		/// Проверки индекса.
+		/// </summary>
+		/// <returns><c>true</c>, если индес верный, <c>false</c> и бросает 
+		/// <c>throw</c> когда индекс неверный.</returns>
+		/// <param name="index">Индекс таблицы</param>
+		/// TODO
+		/// Нелогично, что при правильной обработке возращает true, 
+		/// а иначе выбрасывает исключение.
 		public bool CheckIndex(int index)
 		{
 			//Проверка индекса на выход за границы
@@ -100,17 +143,23 @@ namespace Laba
 			return true;
 		}
 
-		//Метод создания записи
+		/// <summary>
+		/// Метод создания записи.
+		/// </summary>
+		/// <param name="record">Запись абстрактного класса 
+		/// <see cref="Laba.Record"/></param>
 		public void Create(Record record)
 		{
 			record.PK = _tableFreePK++;
 
 			_tableRecords.Add(record);
 			_tableLength++;
-			_typeOfRecords = record.GetType().ToString();
 		}
 
-		//Метод считывания записи
+		/// <summary>
+		/// Метод считывания записи.
+		/// </summary>
+		/// <param name="id">Номер записи.</param>
 		public Record Read(int id)
 		{
 			CheckIndex(id); //Проверяем индекс
@@ -118,7 +167,12 @@ namespace Laba
 			return _tableRecords[id];
 		}
 
-		//Метод обновления записи
+		/// <summary>
+		/// Метод обновления записи.
+		/// </summary>
+		/// <param name="id">Номер записи.</param>
+		/// <param name="record">Запись абстрактного класса 
+		/// <see cref="Laba.Record"/></param>
 		public void Update(int id, Record record)
 		{
 			CheckIndex(id); //Проверяем индекс
@@ -129,7 +183,10 @@ namespace Laba
 			_tableRecords[id] = record;
 		}
 
-		//Метод удаления записи
+		/// <summary>
+		/// Метод удаления записи.
+		/// </summary>
+		/// <param name="id">Номер записи</param>
 		public void Delete(int id)
 		{
 			CheckIndex(id); //Проверяем индекс
@@ -139,7 +196,10 @@ namespace Laba
 			_tableLength--;
 		}
 
-		//Индексатор целого типа
+		/// <summary>
+		///  Выдает или записивает <see cref="Laba.DataTier"/> по указанному индексу.
+		/// </summary>
+		/// <param name="index">Индекс записи</param>
 		public Record this[int index] {
 			get {
 				return Read(index);
@@ -164,7 +224,11 @@ namespace Laba
 		//      }
 
 
-		//Переопределение метода ToString
+		/// <summary>
+		/// Переопределение стандартного метода ToString()
+		/// </summary>
+		/// <returns>Возвращает <see cref="System.String"/> которая представляет 
+		/// текстовое представление указанного <see cref="Laba.DataTier"/>.</returns>
 		public override string ToString()
 		{
 			return string.Format("DataTier: Length = {0}", Length);

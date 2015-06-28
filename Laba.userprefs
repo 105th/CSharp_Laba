@@ -1,13 +1,27 @@
 ﻿<Properties StartupItem="Laba/Laba.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Laba/PresentationTier.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Laba/Program.cs">
     <Files>
-      <File FileName="Laba/DataTier.cs" Line="37" Column="21" />
-      <File FileName="Laba/LogicTier.cs" Line="16" Column="27" />
-      <File FileName="Laba/PresentationTier.cs" Line="62" Column="10" />
-      <File FileName="Laba/Program.cs" Line="6" Column="1" />
-      <File FileName="Laba/FileDB.cs" Line="31" Column="23" />
+      <File FileName="Laba/DataTier.cs" Line="1" Column="1" />
+      <File FileName="Laba/LogicTier.cs" Line="1" Column="1" />
+      <File FileName="Laba/PresentationTier.cs" Line="1" Column="1" />
+      <File FileName="Laba/Program.cs" Line="34" Column="31" />
+      <File FileName="Laba/Record.cs" Line="1" Column="1" />
+      <File FileName="Laba/Solver.cs" Line="12" Column="16" />
+      <File FileName="Laba/RecordWithOneStringField.cs" Line="1" Column="1" />
+      <File FileName="Laba/RecordWithTwoIntField.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Laba" expanded="True">
+            <Node name="Laba" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

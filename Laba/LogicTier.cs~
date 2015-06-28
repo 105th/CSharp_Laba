@@ -1,32 +1,48 @@
 ﻿using System;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Laba
 {
+   /// <summary>
+   /// Слой данных.
+   /// </summary>
    public class LogicTier
    {
-      // Экземляр слоя данных.
+      /// <summary> 
+      /// Экземляр слоя данных.
+      /// </summary>
       DataTier _table;
-      // Есть ли несохраненные изменения в таблице.
+      /// <summary>
+      /// Есть ли несохраненные изменения в таблице.
+      /// </summary>
       bool _tableUnsavedChanges;
 
-      //Конструктор экземляра Юзер логики
+      /// <summary>
+      /// Конструктор экземляра Юзер логики
+      /// </summary>
       public LogicTier()
       {
          _table = new DataTier();
          _tableUnsavedChanges = false;
-//			_typeOfRecords = "Laba.Record";
       }
 
-      //Конструктор экземляра Юзер логики
+      /// <summary>
+      /// Конструктор экземляра Юзер логики (<see cref="Laba.LogicTier"/>) class.
+      /// </summary>
+      /// <param name="dataTable">Таблица слоя данных 
+      /// (<see cref="Laba.DataTier"/>)</param>
       public LogicTier(DataTier dataTable)
       {
          _table = dataTable;
          _tableUnsavedChanges = false;
-//			_typeOfRecords = "Laba.Record";
       }
 
-      // Свойство для статуса изменений в данных
+      /// <summary>
+      /// Возвращает статус несохранённый изменений.
+      /// </summary>
+      /// <value><c>true</c> Если есть несохранённые изменения; если нет, то
+      ///  <c>false</c>.</value>
       [XmlIgnoreAttribute]
       public bool Status {
          get {
@@ -34,7 +50,10 @@ namespace Laba
          }
       }
 
-      // Свойство для имени таблицы
+      /// <summary>
+      /// Задает или возращает имя таблицы.
+      /// </summary>
+      /// <value>Имя таблицы</value>
       [XmlIgnoreAttribute]
       public string Name {
          get {
@@ -50,61 +69,107 @@ namespace Laba
          }
       }
 
-      public string TypeOfRecords {
+      /// <summary>
+      /// Возращает количество записей в таблице.
+      /// </summary>
+      /// <value>Количество записей в таблице</value>
+      [XmlIgnoreAttribute]
+      public int Length {
          get {
-            return _table.TypeOfRecords;  
+            return _table.Length;
          }
       }
 
-      // Метод проверки индекса.
+      /// <summary>
+      /// Проверки индекса. 
+      /// Вызывает внутренний метод у <see cref="Laba.DataTier"./>
+      /// </summary>
+      /// <returns><c>true</c>, если индес верный, <c>false</c> и
+      ///  бросает <c>throw</c> когда индекс неверный.</returns>
+      /// <param name="index">Индекс таблицы</param>
       public bool CheckIndex(int index)
       {
          return _table.CheckIndex(index);
       }
 
-      //Метод создания записи
+      /// <summary>
+      /// Метод создания записи.
+      /// </summary>
+      /// <param name="record">Запись абстрактного класса 
+      /// <see cref="Laba.Record"/></param>
       public void Create(Record record)
       {
          _table.Create(record);
          _tableUnsavedChanges = true;
       }
 
-      //Метод считывания записи
+      /// <summary>
+      /// Метод считывания записи.
+      /// </summary>
+      /// <param name="id">Номер записи.</param>
       public Record Read(int id)
       {
-         if (_table.Length == 0)
-            Console.WriteLine("База данных пуста!");
+         CheckIndex(id);
 
          return _table[id];
       }
 
-      //Метод считывания всех записей
-      public void ReadAll()
+      /// <summary>
+      /// Читает все записи.
+      /// </summary>
+      /// <returns>Список всех записей</returns>
+      public List<Record> ReadAll()
       {
          if (_table.Length == 0)
-            Console.WriteLine("База данных пуста!");
-
-         for (int i = 0; i < _table.Length; i++)
-         {
-            Console.WriteLine(string.Format("{0}: {1}", i, _table[i]));
-         }
+            Console.WriteLine("Таблица пуста!");
+         
+         return _table.Records;
       }
 
-      //Метод обновления записи
+      /// <summary>
+      /// Находит в списке записей запись с указанным номером.
+      /// </summary>
+      /// <param name="PK">Первичный ключ для поиска</param>
+      /// <returns> Возвращает найденную запись с заданным ключом </returns>
+      public Record Find(int PK)
+      {  
+         for (int i = 0; i < _table.Length; i++)
+         {
+            // Вызываем метод проверки наличия номера.
+            if (_table[i].HasData(PK))
+            {
+               // Если запись содержит номер, возвращаем её
+               return (_table[i]);
+            }
+         }
+         return null;
+      }
+
+      /// <summary>
+      /// Метод обновления записи.
+      /// </summary>
+      /// <param name="id">Номер записи.</param>
+      /// <param name="record">Запись абстрактного класса 
+      /// <see cref="Laba.Record"/></param>
       public void Update(int id, Record record)
       {
          _table.Update(id, record);
          _tableUnsavedChanges = true;
       }
 
-      //Метод удаления записи
+      /// <summary>
+      /// Метод удаления записи.
+      /// </summary>
+      /// <param name="id">Номер записи</param>
       public void Delete(int id)
       {
          _table.Delete(id);
          _tableUnsavedChanges = true;
       }
 
-      //Метод удаления всех записей
+      /// <summary>
+      /// Удаляет все записи в таблице.
+      /// </summary>
       public void DeleteAll()
       {
          for (int i = _table.Length - 1; i >= 0; i--)
@@ -112,8 +177,11 @@ namespace Laba
 
          _tableUnsavedChanges = true;
       }
-   
-      //Сохранение таблицы базы данных на диск
+
+      /// <summary>
+      /// Сохраняет таблицу на диск в указанный путь.
+      /// </summary>
+      /// <param name="path">Путь относительно исполняемого файла</param>
       public void Save(string path = null)
       {
          if (string.IsNullOrWhiteSpace(path))
@@ -121,24 +189,47 @@ namespace Laba
 
          FileDB.Serialize(path, _table);
          _tableUnsavedChanges = false;
-
-         Console.WriteLine("Таблица сохранена успешно!");
       }
-   
-      //Загрузка таблицы базы данных с диска
+
+      /// <summary>
+      /// Загружает таблицу с диска из указанного пути.
+      /// </summary>
+      /// <param name="path">Путь относительно исполняемого файла</param>
       public void Load(string path = null)
       {
          if (string.IsNullOrWhiteSpace(path))
             path = "DataBase/unnamed.xml";
 
          _table = FileDB.Deserialize(path);
-
-         Console.WriteLine("Таблица загружена успешно!");
       }
 
-      // Решение поставленной задачи
-      //19. Класс – уровни доступа.
-      //Даны пользователи, роли и пересечение пользователей и ролей, вывести всех пользователей для указанной роли и наоборот, все роли для указанного пользователя;
+      /// <summary>
+      ///  Выдает или записивает <see cref="Laba.DataTier"/> по указанному индексу.
+      /// </summary>
+      /// <param name="index">Индекс записи</param>
+      public Record this[int index] {
+         get {
+            return Read(index);
+         }
+         set {
+            //Проверка индекса на выход за границы
+            if (index > _table.Length)
+               throw new ArgumentOutOfRangeException("Недопустимое значение" +
+               " индекса");
+
+            Update(index, value);
+         }
+      }
+
+
+      /// <summary>
+      /// Решение поставленной задачи
+      /// 19. Класс – уровни доступа.
+      /// Даны пользователи, роли и пересечение пользователей и ролей, 
+      /// вывести всех пользователей для указанной роли 
+      /// и наоборот, все роли для указанного пользователя.
+      /// Вызывает абстрактный одноимённый метод в классе <see cref="Laba.Solver"/>
+      /// </summary>
       public void Solve()
       {
          // TODO

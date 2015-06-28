@@ -1,9 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DataTier xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="unnamed" Length="1" TypeOfRecords="Laba.RecordWithOneStringField">
+<DataTier xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="unnamed" Length="7">
   <Records>
     <Record xsi:type="RecordWithOneStringField">
       <PK>0</PK>
       <FirstField>Дима</FirstField>
+    </Record>
+    <Record xsi:type="RecordWithOneStringField">
+      <PK>1</PK>
+      <FirstField>Ваня</FirstField>
+    </Record>
+    <Record xsi:type="RecordWithOneStringField">
+      <PK>2</PK>
+      <FirstField>Коля</FirstField>
+    </Record>
+    <Record xsi:type="RecordWithOneStringField">
+      <PK>3</PK>
+      <FirstField>Дима</FirstField>
+    </Record>
+    <Record xsi:type="RecordWithOneStringField">
+      <PK>4</PK>
+      <FirstField>Петя</FirstField>
+    </Record>
+    <Record xsi:type="RecordWithOneStringField">
+      <PK>5</PK>
+      <FirstField>Дима</FirstField>
+    </Record>
+    <Record xsi:type="RecordWithOneStringField">
+      <PK>6</PK>
+      <FirstField>Коля</FirstField>
     </Record>
   </Records>
 </DataTier>

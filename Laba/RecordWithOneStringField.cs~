@@ -5,8 +5,8 @@ namespace Laba
    //Класс одной записи с одним полем типа "строка", унаследованный от класса Record
    public class RecordWithOneStringField : Record
    {
-      protected string _FirstField;
       //Строка первого поля
+      protected string _FirstField;
 
       //Конструктор
       public RecordWithOneStringField(int primaryKey = 0, string firstField = null)

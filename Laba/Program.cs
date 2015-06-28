@@ -2,7 +2,9 @@
 // Даны пользователи, роли и пересечение пользователей и ролей, вывести всех 
 // пользователей для указанной роли и наоборот, все роли для указанного 
 // пользователя;
+using System.IO;
 using System;
+using System.Text.RegularExpressions;
 
 namespace Laba
 {
@@ -10,17 +12,32 @@ namespace Laba
 	{
 		public static void Main(string[] args)
 		{
-			DataTier table = new DataTier();
-			LogicTier logicTable = new LogicTier(table);
+			PresentationTier UI = new PresentationTier();
+			UI.Menu();
 
-//			RecordWithOneStringField record = new RecordWithOneStringField(0, "Дима");
-//			logicTable.Create(record);
-//			logicTable.Save();
+//			DataTier d = new DataTier();
+//			LogicTier l = new LogicTier(d);
+//			RecordWithTwoIntField r = new RecordWithTwoIntField(4, 1, 3);
+//			l.Create(r);
+//
+//			string[] parseStrings = l[0].ToString().Split(new Char [] {
+//				' ',
+//				',',
+//				'.',
+//				':'
+//			});
 
-			logicTable.Load();
+//			Console.WriteLine(l[0].ToString().Substring(l[0].ToString().LastIndexOf("FirstField")));
 
-			Console.WriteLine(logicTable.TypeOfRecords.Contains("RecordWithTwoStringField"));
-         
+//         int number = Convert.ToInt32(Regex.Match(l[0].ToString(), @"[d]+", ));
+//         int number = Convert.ToInt32(Regex.Match(l[0].ToString(), @"[^\d]+", ""));
+//			Console.WriteLine(int.TryParse(l[0].ToString(), out number));
+//			Console.WriteLine(number);
+
+//			for (int i = 0; i < parseStrings.Length; i++)
+//			{
+//				Console.WriteLine("{0}: {1};", i, parseStrings[i]);
+//			}
 		}
 	}
 }
