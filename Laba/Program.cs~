@@ -1,0 +1,43 @@
+﻿// 19. Класс – уровни доступа.
+// Даны пользователи, роли и пересечение пользователей и ролей, вывести всех 
+// пользователей для указанной роли и наоборот, все роли для указанного 
+// пользователя;
+using System.IO;
+using System;
+using System.Text.RegularExpressions;
+
+namespace Laba
+{
+   class MainClass
+   {
+      public static void Main(string[] args)
+      {
+         PresentationTier UI = new PresentationTier();
+         UI.Menu();
+
+//			DataTier d = new DataTier();
+//			LogicTier l = new LogicTier(d);
+//			RecordWithTwoIntField r = new RecordWithTwoIntField(4, 1, 3);
+//			l.Create(r);
+//
+//			string[] parseStrings = l[0].ToString().Split(new Char [] {
+//				' ',
+//				',',
+//				'.',
+//				':'
+//			});
+
+//			Console.WriteLine(l[0].ToString().Substring(l[0].ToString().LastIndexOf("FirstField")));
+
+//         int number = Convert.ToInt32(Regex.Match(l[0].ToString(), @"[d]+", ));
+//         int number = Convert.ToInt32(Regex.Match(l[0].ToString(), @"[^\d]+", ""));
+//			Console.WriteLine(int.TryParse(l[0].ToString(), out number));
+//			Console.WriteLine(number);
+
+//			for (int i = 0; i < parseStrings.Length; i++)
+//			{
+//				Console.WriteLine("{0}: {1};", i, parseStrings[i]);
+//			}
+      }
+   }
+}

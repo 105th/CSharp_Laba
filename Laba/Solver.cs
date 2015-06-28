@@ -109,6 +109,8 @@ namespace Laba
 							// Если запись содержит id роли
 							if (UsersRoles[i].HasData(id, position_of_role))
 							{
+								// TODO
+								// Исправить это говно с использованием регулярных выражений
 								// Из найденной позиции извлекаем (парсим) ключ и
 								// добавляем пароль с этим ключом в список результатов.
 								string[] parseStrings = UsersRoles[i].ToString().Split(new Char [] {
@@ -165,6 +167,8 @@ namespace Laba
 							// Если запись содержит id пользователя
 							if (UsersRoles[i].HasData(id, position_of_user))
 							{
+								// TODO
+								// Исправить это говно с использованием регулярных выражений
 								// Из найденной позиции извлекаем (парсим) ключ и
 								// добавляем роль с этим ключом в список результатов.
 								string[] parseStrings = UsersRoles[i].ToString().Split(new Char [] {
