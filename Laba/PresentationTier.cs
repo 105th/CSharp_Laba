@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 
 namespace Laba
 {
@@ -37,6 +36,7 @@ namespace Laba
             // Если таблица выбрана, тогда выводим полноценное меню
             else
 				{
+					Console.Clear();
 					Console.WriteLine("Меню:\n" +
 					"1)Создать запись\n" +
 					"2)Удалить запись\n" +
@@ -76,7 +76,8 @@ namespace Laba
 								"Ваш выбор: ");
 
 								// Считываем ответ.
-								int.TryParse(Console.ReadLine(), out answer);
+								if (int.TryParse(Console.ReadLine(), out answer) == false)
+									answer = -1;
 							}
                      // Случай, когда в таблице есть записи и тип записей содержит 
                      // одно строкое поле.
@@ -139,6 +140,9 @@ namespace Laba
 
 							break;
 						}
+
+
+
 				// Удаление записи.
 					case 2:
 						{
@@ -148,34 +152,44 @@ namespace Laba
 							// помощью лямбда выражений
 							Console.WriteLine("Таблица \"{0}\":", _dataBase[_choiseTable].Name);
 							_dataBase[_choiseTable].ReadAll().ForEach(element => Console.WriteLine(element));
-							Console.WriteLine("Введите номер записи, которую вы хотите " +
-							"удалить или '-1' для отмены операции удаления: ");
+							Console.WriteLine("Введите первичный ключ записи," +
+							" которую вы хотите удалить " +
+							"или '-1' для отмены операции удаления: ");
 
 							// Считываем номер записи.
-							int id;
-							int.TryParse(Console.ReadLine(), out id);
+							int pk;
+							if (int.TryParse(Console.ReadLine(), out pk) == false)
+								pk = -1;
 
 							// Если ввёл не то, повторяем ввод.
-							while (id != -1 && !(_dataBase[_choiseTable].CheckIndex(id)))
+							while (pk != -1 && !(_dataBase[_choiseTable].CheckIndex(pk)))
 							{
-								Console.WriteLine("Похоже, данной записи не существует." +
+								Console.WriteLine("Похоже, данной записи не существует. " +
 								"Повторите ввод или введите '-1' для выхода");
-								int.TryParse(Console.ReadLine(), out id);
+								if (int.TryParse(Console.ReadLine(), out pk))
+									pk = -1;
 							}
 
-							if (id == -1)
+							if (pk == -1)
 							{
 								Console.WriteLine("Выходим обратно в меню");
 								break;
 							}
 
 							// Удаляем запись.
-							_dataBase[_choiseTable].Delete(id);
-							Console.WriteLine("Запись в таблице {0} под номером {1} " +
-							"успешно удалена!", _dataBase[_choiseTable].Name, id);
+							string dataOfDeletedRecord = _dataBase[_choiseTable].Read(pk).ToString();
+							_dataBase[_choiseTable].Delete(pk);
+							Console.WriteLine("Запись \"{0}\" в таблице \"{1}\" с первичным ключом " +
+							"{2} успешно удалена!", 
+								dataOfDeletedRecord, 
+								_dataBase[_choiseTable].Name,
+								pk);
 
 							break;
 						}
+
+
+
 				// Обновление записи
 					case 3:
 						{
@@ -189,18 +203,20 @@ namespace Laba
 							"обновить или '-1' для отмены операции обновления: ");
 
 							// Считываем номер записи.
-							int id;
-							int.TryParse(Console.ReadLine(), out id);
+							int pk;
+							if (int.TryParse(Console.ReadLine(), out pk) == false)
+								pk = -1;
 
 							// Если ввёл не то, повторяем ввод.
-							while (id != -1 && !(_dataBase[_choiseTable].CheckIndex(id)))
+							while (pk != -1 && !(_dataBase[_choiseTable].CheckIndex(pk)))
 							{
 								Console.WriteLine("Похоже, данной записи не существует." +
 								"Повторите ввод или введите '-1' для выхода:");
-								int.TryParse(Console.ReadLine(), out id);
+								if (int.TryParse(Console.ReadLine(), out pk) == false)
+									pk = -1;
 							}
 
-							if (id == -1)
+							if (pk == -1)
 							{
 								Console.WriteLine("Выходим обратно в меню");
 								break;
@@ -215,10 +231,10 @@ namespace Laba
 								RecordWithOneStringField tmpRecord = CreateRecordWithOneStringField();
 
 								// Обновляем запись с одним полем и выводим сообщение.
-								_dataBase[_choiseTable].Update(id, tmpRecord);
+								_dataBase[_choiseTable].Update(pk, tmpRecord);
 
 								Console.WriteLine("Запись под номером {0} в таблице {1}" +
-								"обновлена!\n", id, _dataBase[_choiseTable].Name);
+								"обновлена!\n", pk, _dataBase[_choiseTable].Name);
 							} 
                      // Обновляем запись с двумя целыми полями
                      else if (_dataBase[_choiseTable].Read(0).GetType().ToString().Contains(
@@ -227,10 +243,10 @@ namespace Laba
 								RecordWithTwoIntField tmpRecord = CreateRecordWithTwoIntField();
 
 								// Обновляем запись с одним полем и выводим сообщение.
-								_dataBase[_choiseTable].Update(id, tmpRecord);
+								_dataBase[_choiseTable].Update(pk, tmpRecord);
 
 								Console.WriteLine("Запись под номером {0} в таблице {1} " +
-								"обновлена!\n", id, _dataBase[_choiseTable].Name);
+								"обновлена!\n", pk, _dataBase[_choiseTable].Name);
 							} else
 							{
 								Console.WriteLine("Похоже, программа не смогла " +
@@ -238,6 +254,10 @@ namespace Laba
 							}
 							break;
 						}
+
+
+
+
 				// Чтение одной записи.
 					case 4:
 						{
@@ -248,20 +268,22 @@ namespace Laba
 
 							// Считываем номер записи.
 							int id;
-							int.TryParse(Console.ReadLine(), out id);
+							if (int.TryParse(Console.ReadLine(), out id) == false)
+								id = -1;
 
 							// Если ввёл не то, повторяем ввод.
 							while (id != -1 && !(_dataBase[_choiseTable].CheckIndex(id)))
 							{
 								Console.WriteLine("Похоже, данной записи не существует." +
 								"Повторите ввод или введите '-1' для выхода:");
-								int.TryParse(Console.ReadLine(), out id);
+								if (int.TryParse(Console.ReadLine(), out id) == false)
+									id = -1;
 							}
 
 							if (id == -1)
 							{
 								Console.WriteLine("Выходим обратно в меню");
-								return;
+								break;
 							}
 
 							Console.WriteLine("Таблица: {0},\n" +
@@ -269,6 +291,10 @@ namespace Laba
 								_dataBase[_choiseTable].Read(id));
 							break;
 						}
+
+
+
+
 				// Чтение всех записи.
 					case 5:
 						{
@@ -279,6 +305,9 @@ namespace Laba
 
 							break;
 						}
+
+
+
 				// Выбор таблицы для работы.
 					case 6:
 						{
@@ -325,6 +354,9 @@ namespace Laba
 
 							break;
 						}
+
+
+
 				// Сохранение БД на диск
 					case 7:
 						{
@@ -353,6 +385,9 @@ namespace Laba
                      
 							break;
 						}
+
+
+
 				// Решение задачи.
 					case 8:
 						{
@@ -361,8 +396,7 @@ namespace Laba
 							"Даны пользователи, роли и пересечение пользователей и ролей, " +
 							"вывести всех пользователей для указанной роли и наоборот, " +
 							"все роли для указанного пользователя.");
-
-
+                     
 							// Проверяем количество таблиц в БД
 							if (_dataBase.Count < 3)
 							{
@@ -381,12 +415,11 @@ namespace Laba
 									_dataBase[i].Length);
 							}
 
-							// TODO
-							// Убрать 3 повторяющихся куска кода (либо запрашивать сразу
+							// TODO FIXME Убрать 3 повторяющихся куска кода (либо запрашивать сразу
 							// три номер, либо как-нибудь по-другому огранизовать)
 							// Переменные для хранения ответов.
 							int idUsers, idRoles, idUsersRoles;
-							Console.WriteLine("Введите номер таблицы Пользователей:");
+							Console.WriteLine("Введите номер (начиная с нуля) таблицы Пользователей:");
 							// Считываем ответ.
 							int.TryParse(Console.ReadLine(), out idUsers);
 
@@ -404,7 +437,7 @@ namespace Laba
 							if (idUsers == -1)
 								break;
 
-							Console.WriteLine("Введите номер таблицы Ролей:");
+							Console.WriteLine("Введите номер (начиная с нуля) таблицы Ролей:");
 							// Считываем ответ.
 							int.TryParse(Console.ReadLine(), out idRoles);
 
@@ -422,7 +455,7 @@ namespace Laba
 							if (idRoles == -1)
 								break;
 
-							Console.WriteLine("Введите номер таблицы пересечения:");
+							Console.WriteLine("Введите номер (начиная с нуля) таблицы пересечения:");
 							// Считываем ответ.
 							int.TryParse(Console.ReadLine(), out idUsersRoles);
 
@@ -488,12 +521,15 @@ namespace Laba
 
 				Console.Write("Нажмите любую клавишу...");
 				Console.ReadLine();
-				Console.Clear();
 			} while (choise != 0);
 		}
 
-		// TODO
-		// Дополнить описание метода
+
+
+
+
+
+		// TODO Дополнить описание метода
 		/// <summary>
 		/// Проверяет базу данных на наличие таблиц, если их нет, то предлагает
 		/// либо создать новую, либо загрузить с диска существующую.
@@ -512,6 +548,10 @@ namespace Laba
 			return true;
 		}
 
+
+
+
+
 		/// <summary>
 		/// Создает запись с одним текстовым полем.
 		/// </summary>
@@ -526,6 +566,10 @@ namespace Laba
 
 			return tmpRecord;
 		}
+
+
+
+
 
 		/// <summary>
 		/// Создает запись с двумя текстовыми полями.
@@ -555,8 +599,12 @@ namespace Laba
 			return tmpRecord;
 		}
 
-		// TODO
-		// Дополнить описание метода
+
+
+
+
+
+		// TODO Дополнить описание метода
 		/// <summary>
 		/// Создает новую таблицу.
 		/// </summary>
@@ -571,12 +619,20 @@ namespace Laba
 			_choiseTable = _dataBase.Count - 1;
 
 			Console.WriteLine("Таблица успешно создана!");
+			Console.Write("Нажмите любую клавишу...");
+			Console.ReadLine();
+			Console.Clear();
 			return true;
 		}
 
-		// TODO
-		// Дополнить описание метода
-		// Дополнить комментарии
+
+
+
+
+
+
+		// TODO Дополнить описание метода
+		// TODO Дополнить комментарии
 		/// <summary>
 		///  Загружает таблицу.
 		/// </summary>
@@ -598,8 +654,7 @@ namespace Laba
 					files[i].LastIndexOf(saveDirectory)));
 			}
 
-			// TODO
-			// Заменить ввод имени на ввод порядкового номера
+			// TODO Заменить ввод имени на ввод порядкового номера
 
 			Console.WriteLine("Введите имя для загрузки таблицы " +
 			"*по умолчанию загрузится таблица unnamed.xml " +
@@ -612,7 +667,8 @@ namespace Laba
 			while (!(File.Exists(Directory.GetCurrentDirectory()
 			             + saveDirectory
 			             + "Roles.xml"))
-			             && answer != "-1")
+			             && answer != "-1"
+			             && !(string.IsNullOrWhiteSpace(answer)))
 			{
 				Console.WriteLine("Данного файла не существует, повторите ввод " +
 				"или введите -1 для выхода.");
@@ -625,17 +681,32 @@ namespace Laba
 				return false;
 			}
 
+			// Переменная пути
+			string path = answer;
+			// Если пользователь ничего не ввёл, устанавливаем путь по умолчанию
+			if (string.IsNullOrWhiteSpace(path))
+				path = saveDirectory + "unnamed.xml";
+
 			LogicTier logicTable = new LogicTier();
-			logicTable.Load(Directory.GetCurrentDirectory() + saveDirectory + answer);
+			logicTable.Load(Directory.GetCurrentDirectory() + saveDirectory + path);
 			_dataBase.Add(logicTable);
 			_choiseTable = _dataBase.Count - 1;
 
-			Console.WriteLine("Таблица успешно загружена!");
+			Console.WriteLine("Таблица {0} успешно загружена!", path);
+			Console.Write("Нажмите любую клавишу...");
+			Console.ReadLine();
+			Console.Clear();
 			return true;
 		}
 
-		// TODO
-		// Дополнить описание метода
+
+
+
+
+
+
+
+		// TODO Дополнить описание метода
 		/// <summary>
 		/// Добавляет новую таблицу к БД.
 		/// </summary>
@@ -652,8 +723,8 @@ namespace Laba
 			// Если ввёл не то, повторяем ввод.
 			while (answer != 1 && answer != 2 && answer != -1)
 			{
-				Console.WriteLine("Похоже, вы ввели что-то другое ({0}), " +
-				"введите 1, 2 или -1 для выхода из программы:", answer);
+				Console.WriteLine("Похоже, вы ввели что-то другое, " +
+				"введите 1, 2 или -1 для выхода из программы:");
 				int.TryParse(Console.ReadLine(), out answer);
 			}
 

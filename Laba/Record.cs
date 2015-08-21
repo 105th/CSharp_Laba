@@ -31,7 +31,7 @@ namespace Laba
 		}
 
 		//Виртуальные методы задания и выдачи Первичного Ключа записи
-		//		[XmlAttribute("PK")]
+		[XmlAttribute("Первичный ключ")]
 		public virtual int PK {
 			get {
 				return(_PrimaryKey);
@@ -40,7 +40,6 @@ namespace Laba
 				_PrimaryKey = value;
 			}
 		}
-
 	}
 }
 

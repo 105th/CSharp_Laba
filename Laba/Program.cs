@@ -8,12 +8,22 @@ using System.Text.RegularExpressions;
 
 namespace Laba
 {
-	class MainClass
-	{
-		public static void Main(string[] args)
-		{
-			PresentationTier UI = new PresentationTier();
-			UI.Menu();
+   class MainClass
+   {
+      public static void Main(string[] args)
+      {
+//			PresentationTier UI = new PresentationTier();
+//			UI.Menu();
+
+         char s = 's';
+         char d = 's';
+         Console.WriteLine(s.GetHashCode());
+         Console.WriteLine(d.GetHashCode());
+
+//			DataTier d = new DataTier("");
+//			LogicTier l = new LogicTier(d);
+
+//			l.Name = "";
 
 //			DataTier d = new DataTier();
 //			LogicTier l = new LogicTier(d);
@@ -38,6 +48,6 @@ namespace Laba
 //			{
 //				Console.WriteLine("{0}: {1};", i, parseStrings[i]);
 //			}
-		}
-	}
+      }
+   }
 }

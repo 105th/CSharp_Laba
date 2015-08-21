@@ -35,15 +35,14 @@ namespace Laba
             int.TryParse(Console.ReadLine(), out answer);
          }
 
-         // TODO
-         // Сделать парсинг названия таблицы, чтобы программа сама
+         // TODO Сделать парсинг названия таблицы, чтобы программа сама
          // понимала, в каком порядке записаны ключи
          Console.WriteLine("Укажите, в каком порядке записаны ключи в " +
          "таблице пересечений(исходя из названия таблицы):\n" +
          "[1] 1 - Role, 2 - User;\n" +
-         "[2] 1 - User, 2 - Role.");
-         // TODO
-         // Убрать значение по умолчанию
+         "[2] 1 - User, 2 - Role.\n" +
+         "(или введите \"-1\" для выхода.");
+         // TODO Убрать значение по умолчанию
          int position_of_user = 1;
          int position_of_role;
          int.TryParse(Console.ReadLine(), out position_of_role);
@@ -62,7 +61,7 @@ namespace Laba
          }
 
          // Анализируем ответ и рассталяем порядок полей в таблице.
-         if (position_of_role != -1)
+         if (position_of_role == -1)
             answer = -1;
          else if (position_of_role == 1)
             position_of_user = 2;
@@ -109,8 +108,7 @@ namespace Laba
                      // Если запись содержит id роли
                      if (UsersRoles[i].HasData(id, position_of_role))
                      {
-                        // TODO
-                        // Исправить это говно с использованием регулярных выражений
+                        // FIXME Исправить это говно с использованием регулярных выражений
                         // Из найденной позиции извлекаем (парсим) ключ и
                         // добавляем пароль с этим ключом в список результатов.
                         string[] parseStrings = UsersRoles[i].ToString().Split(new Char [] {
@@ -167,8 +165,7 @@ namespace Laba
                      // Если запись содержит id пользователя
                      if (UsersRoles[i].HasData(id, position_of_user))
                      {
-                        // TODO
-                        // Исправить это говно с использованием регулярных выражений
+                        // FIXME Исправить это говно с использованием регулярных выражений
                         // Из найденной позиции извлекаем (парсим) ключ и
                         // добавляем роль с этим ключом в список результатов.
                         string[] parseStrings = UsersRoles[i].ToString().Split(new Char [] {

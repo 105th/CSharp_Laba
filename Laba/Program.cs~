@@ -12,8 +12,18 @@ namespace Laba
    {
       public static void Main(string[] args)
       {
-         PresentationTier UI = new PresentationTier();
-         UI.Menu();
+//			PresentationTier UI = new PresentationTier();
+//			UI.Menu();
+
+         char s = 's';
+         char d = 's';
+         Console.WriteLine(s.GetHashCode());
+         Console.WriteLine(d.GetHashCode());
+
+//			DataTier d = new DataTier("");
+//			LogicTier l = new LogicTier(d);
+
+//			l.Name = "";
 
 //			DataTier d = new DataTier();
 //			LogicTier l = new LogicTier(d);

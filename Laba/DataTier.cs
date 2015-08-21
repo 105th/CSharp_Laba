@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 namespace Laba
 {
 	/// <summary>
-	/// Класс Слоя Данных..
+	/// Класс Слоя Данных.
 	/// </summary>
 	[Serializable]
 	public class DataTier
@@ -14,18 +14,22 @@ namespace Laba
 		/// Имя для таблицы.
 		/// </summary>
 		string _tableName;
+
 		/// <summary>
 		/// Лист записей.
 		/// </summary>
 		List<Record> _tableRecords;
+
 		/// <summary>
 		/// Количество записей в таблице БД.
 		/// </summary>
 		int _tableLength;
+
 		/// <summary>
 		/// Свободный ключ.
 		/// </summary>
 		int _tableFreePK;
+
 
 
 		/// <summary>
@@ -39,6 +43,8 @@ namespace Laba
 			_tableName = "unnamed";
 		}
 
+
+
 		/// <summary>
 		/// Конструктор таблицы базы данных с именем <see cref="Laba.DataTier"/>.
 		/// </summary>
@@ -48,37 +54,63 @@ namespace Laba
 			_tableRecords = new List<Record>();
 			_tableLength = 0;
 			_tableFreePK = 0;
+
+			// Проверяем имя на пустоту
+			if (string.IsNullOrWhiteSpace(name))
+				throw new ArgumentException("Имя не может быть пустым!");
 			_tableName = name;
 		}
 
+
+
 		/// <summary>
-		/// Конструктор таблицы базы данных из списка записей
-		///  <see cref="Laba.DataTier"/>.
+		/// Конструктор таблицы базы данных из списка записей <see cref="Laba.DataTier"/>.
 		/// </summary>
 		/// <param name="records">Список записей.</param>
 		public DataTier(List<Record> records, string name = "unnamed")
 		{
+			// Проверяем список записей из параметров
+			if (records.Count == 0)
+				throw new ArgumentException("Список записей не может быть пустым!");
 			_tableRecords = records;
 			_tableLength = records.Count;
-			// Здесь требуется найти первый свободный первичный ключ, т.е. (самый 
-			// максимальный + 1).
-			int bestFreePK = 0;
 
-			// Выполняем поиск максимального ключа с помощью лямбда выражения.
-			records.ForEach(rec => {
+			// Обновляем первый свободный первичный ключ
+			UpdateFreePK();
+
+			// Проверяем имя на пустоту
+			if (string.IsNullOrWhiteSpace(name))
+				throw new ArgumentException("Имя не может быть пустым!");
+			_tableName = name;
+		}
+
+
+
+		/// <summary>
+		/// Обновляет первый свободный ключ
+		/// </summary>
+		public void UpdateFreePK()
+		{
+			// Здесь требуется найти первый свободный первичный ключ, т.е. (самый 
+			// максимальный из имеющихся + 1).
+			int bestFreePK = 0;
+			// Выполняем поиск максимального ключа с помощью лямбда выражения,
+			// чтобы первый свободный ПК не повторялся с предыдущими
+			_tableRecords.ForEach(rec => {
 				if (rec.PK > bestFreePK)
 					bestFreePK = rec.PK;
 			});
 
-			// Присваиваем результат.
+			// Обновляем поле свободного Первичного Ключа
 			_tableFreePK = bestFreePK + 1;
-			_tableName = name;
 		}
 
+
+
+		// TODO Убрать исключение из свойств (!!!)
 		/// <summary>
 		/// Свойство для хранения имени таблицы базы данных.
 		/// </summary>
-		/// 
 		/// <value>Возвращает\задает имя таблицы</value>
 		[XmlAttribute("Name")]
 		public string Name {
@@ -86,9 +118,15 @@ namespace Laba
 				return _tableName;
 			}
 			set {
+				// Проверяем имя на пустоту.
+				if (string.IsNullOrWhiteSpace(value))
+					throw new NameTableException("Имя не может быть пустым");
+            
 				_tableName = value;
 			}
 		}
+
+
 
 		/// <summary>
 		/// Свойство для хранения количества записей таблицы базы данных.
@@ -100,9 +138,15 @@ namespace Laba
 				return _tableLength;
 			}
 			set {
+				// Проверяем количество на неотрицательное значение
+				if (Length < 0)
+					throw new ArgumentException("Количество записей не может быть" +
+					"отрицательным!");
 				_tableLength = value;
 			}
 		}
+
+
 
 		/// <summary>
 		/// Свойство для хранения записей таблицы.
@@ -115,15 +159,20 @@ namespace Laba
 			}
 		}
 
+
+
+		// TODO В будущем сделать метод protected вместо private
+		// TODO Нелогично, что при правильной обработке возращает true,
+		// а иначе выбрасывает исключение.
 		/// <summary>
 		/// Проверки индекса.
 		/// </summary>
 		/// <returns><c>true</c>, если индес верный, <c>false</c> и бросает 
-		/// <c>throw</c> когда индекс неверный.</returns>
+		/// <c>throw</c><see cref="System.ArgumentOutOfRangeException"/> 
+		/// когда индекс выходит за границы или когда в базе данных нет записей или
+		/// <c>throw</c><see cref="System.ArgumentException"/> когда записи с
+		/// указанным индексом. </returns>
 		/// <param name="index">Индекс таблицы</param>
-		/// TODO
-		/// Нелогично, что при правильной обработке возращает true, 
-		/// а иначе выбрасывает исключение.
 		public bool CheckIndex(int index)
 		{
 			//Проверка индекса на выход за границы
@@ -143,6 +192,8 @@ namespace Laba
 			return true;
 		}
 
+
+
 		/// <summary>
 		/// Метод создания записи.
 		/// </summary>
@@ -156,6 +207,8 @@ namespace Laba
 			_tableLength++;
 		}
 
+
+
 		/// <summary>
 		/// Метод считывания записи.
 		/// </summary>
@@ -166,6 +219,8 @@ namespace Laba
 
 			return _tableRecords[id];
 		}
+
+
 
 		/// <summary>
 		/// Метод обновления записи.
@@ -183,6 +238,8 @@ namespace Laba
 			_tableRecords[id] = record;
 		}
 
+
+
 		/// <summary>
 		/// Метод удаления записи.
 		/// </summary>
@@ -196,23 +253,31 @@ namespace Laba
 			_tableLength--;
 		}
 
+
+
+
 		/// <summary>
 		///  Выдает или записивает <see cref="Laba.DataTier"/> по указанному индексу.
 		/// </summary>
 		/// <param name="index">Индекс записи</param>
 		public Record this[int index] {
 			get {
+				// Проверяем индекс.
+				CheckIndex(index);
+
 				return Read(index);
 			}
 			set {
-				//Проверка индекса на выход за границы
-				if (index > _tableLength)
+				// Проверка индекса на выход за границы.
+				if (index > _tableLength || index < 0)
 					throw new ArgumentOutOfRangeException("Недопустимое значение" +
 					" индекса");
 
 				Update(index, value);
 			}
 		}
+
+
 
 		//TODO Индексатор для строки
 		//      public int this[string day]
@@ -222,6 +287,7 @@ namespace Laba
 		//            return (GetDay(day));
 		//         }
 		//      }
+
 
 
 		/// <summary>

@@ -1,9 +1,9 @@
 ﻿<Properties StartupItem="Laba/Laba.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Laba/Solver.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Laba/DataTier.cs">
     <Files>
-      <File FileName="Laba/PresentationTier.cs" Line="54" Column="33" />
-      <File FileName="Laba/Solver.cs" Line="172" Column="9" />
+      <File FileName="Laba/DataTier.cs" Line="115" Column="3" />
+      <File FileName="Laba/FileDB.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

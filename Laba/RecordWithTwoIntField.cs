@@ -5,6 +5,7 @@ namespace Laba
 	//Класс одной записи с двумя полями типа "строка", унаследованный от класса RecordWithOneStringField
 	public class RecordWithTwoIntField : Record
 	{
+		// TODO Сделать имя для первого столбца и для второго
 		// Первое поле типа int
 		int _firstField;
 		// Второе поле типа int
